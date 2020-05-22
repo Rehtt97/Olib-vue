@@ -1,0 +1,168 @@
+<template>
+	<div class="login-page">
+		<Header></Header>
+		<div class="login-container">
+			<h2 class="login-title">注册账号</h2>
+			<form class="login-form" @submit.prevent="signUp">
+				<div class="form-group">
+					<label for="email">邮箱地址</label>
+					<input id="email" v-model="email" type="email" placeholder="your@example.com" required />
+				</div>
+				<div class="form-group">
+					<label for="username">用户名</label>
+					<input id="username" v-model="username" type="text" placeholder="请输入你的用户名" required />
+				</div>
+				<div class="form-group">
+					<label for="password">密码</label>
+					<input id="password" v-model="password" type="password" placeholder="•••••••••" required />
+				</div>
+				<div class="form-group">
+					<label for="passwordConfirm">确认密码</label>
+					<input
+						id="passwordConfirm"
+						v-model="passwordConfirm"
+						type="password"
+						placeholder="•••••••••"
+						required
+					/>
+				</div>
+				<button type="sbumit" class="btn-submit">注册</button>
+			</form>
+		</div>
+	</div>
+</template>
+
+<script>
+import Header from '../components/Header';
+export default {
+	name: 'SignUp',
+	data() {
+		return {
+			email: '',
+			password: '',
+			passwordConfirm: '',
+			username: '',
+			user: {}
+		};
+	},
+	methods: {
+		async signUp() {
+			let email = this.email;
+			let username = this.username;
+			let password = this.password;
+			let passwordConfirm = this.passwordConfirm;
+			try {
+				const res = await this.$store.dispatch('signup', {
+					email,
+					password,
+					passwordConfirm,
+					username
+				});
+				this.$notify({
+					title: '注册成功!',
+					dangerouslyUseHTMLString: true,
+					message: `欢迎你! ${res.data.data.user.username}. 3s后将为你跳转至首页！`,
+					type: 'success',
+					position: 'top-left',
+					showClose: false,
+					offset: 100,
+					duration: 2500
+				});
+				setTimeout(() => {
+					this.$router.push('/');
+				}, 3000);
+			} catch (err) {
+				this.$notify({
+					title: '注册失败!',
+					message: `${err.response.data.message}`,
+					type: 'error',
+					position: 'top-left',
+					showClose: false,
+					offset: 100
+				});
+				console.log(err);
+			}
+		}
+	},
+	components: {
+		Header
+	}
+};
+</script>
+<style>
+.login-page {
+	background: #f7f7f7;
+	height: 100vh;
+}
+
+.login-title {
+	background: linear-gradient(
+		to left,
+		rgba(104, 178, 160, 1),
+		rgb(162, 184, 157)
+	);
+	background-clip: text;
+	color: transparent;
+	font-size: 2.6rem;
+	text-transform: uppercase;
+	word-spacing: 5px;
+	margin-bottom: 35px;
+}
+
+.login-container {
+	margin-top: 180px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 50px 70px;
+	box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
+}
+
+.form-group {
+	margin-bottom: 25px;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 10px;
+	font-size: 2rem;
+}
+
+.form-group input {
+	display: block;
+	outline: none;
+	border: none;
+	background-color: #f2f2f2;
+	padding: 17.5px 17.5px;
+	width: 100%;
+	border-radius: 4px;
+	font-size: 1.6rem;
+	font-size: 1.8rem;
+}
+
+.login-form {
+	width: 550px;
+}
+
+.btn-submit {
+	border: none;
+	margin-top: 5px;
+	background-color: #68b2a0;
+	color: #fff;
+	font-size: 1.8rem;
+	padding: 14px 30px;
+	border-radius: 10rem;
+	position: relative;
+	top: 0;
+	transition: 0.3s all;
+	cursor: pointer;
+}
+
+.btn-submit:hover {
+	top: -3px;
+	-webkit-box-shadow: 0px 10px 13px -1px #ccc;
+	box-shadow: 0px 10px 13px -1px #ccc;
+}
+</style>
