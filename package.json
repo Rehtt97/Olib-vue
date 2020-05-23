@@ -14,6 +14,7 @@
     "epubjs": "^0.3.85",
     "hover.css": "^2.3.2",
     "js-file-download": "^0.4.11",
+    "sweetalert2": "^9.13.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
     "vuex": "^3.1.3"

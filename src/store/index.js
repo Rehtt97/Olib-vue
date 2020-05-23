@@ -26,6 +26,9 @@ export default new Vuex.Store({
 		logout(state) {
 			state.status = '';
 			state.token = '';
+		},
+		updateUser(state, payload) {
+			state.user = { ...payload.user };
 		}
 	},
 	actions: {
@@ -79,6 +82,19 @@ export default new Vuex.Store({
 						localStorage.removeItem('user');
 						reject(err);
 					});
+			});
+		},
+		updateUser({ commit }, data) {
+			return new Promise((resolve, reject) => {
+				req
+					.updateUser(data)
+					.then(res => {
+						const user = res.data.data.user;
+						localStorage.setItem('user', JSON.stringify(user));
+						commit({ type: 'updateUser', user });
+						resolve(user);
+					})
+					.catch(err => reject(err));
 			});
 		}
 	},

@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 export function throttle(fn, delay) {
 	var timer;
 	return function() {
@@ -12,3 +14,19 @@ export function throttle(fn, delay) {
 		}, delay);
 	};
 }
+
+export const notifier = notify => {
+	Swal.fire({
+		icon: notify.type,
+		title: notify.title,
+		showConfirmButton: false,
+		timer: notify.time || 1500,
+		text: notify.message || ''
+	});
+};
+
+export const notifySuccess = ({ title, message, time = 1500 }) =>
+	notifier({ title, message, time, type: 'success' });
+
+export const notifyError = ({ title, message, time = 2500 }) =>
+	notifier({ title, message, time, type: 'error' });

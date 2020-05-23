@@ -81,9 +81,9 @@ export const downloadBook = async (id, bookName) => {
 	link.click();
 };
 
-export const updateUserInfo = async (data, type) => {
+export const updateUser = async (data, type) => {
 	const url =
-		type === 'password' ? '/users/updateMypassord' : '/users/updateMe';
+		type === 'password' ? '/users/updateMyPassword' : '/users/updateMe';
 
 	const res = await axios({
 		url,
